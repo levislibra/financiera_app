@@ -32,14 +32,18 @@ class ExtendsResPartner(models.Model):
 	app_localidad = fields.Char('Ciudad')
 	app_portal_provincia = fields.Many2one('res.country.state', "Provincia")
 	app_provincia = fields.Char('Provincia')
-	# Datos Ingreso
+	# Datos Ingreso y Egreso
+	app_deuda = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Le debes a otra entidad financiera?")
+	app_cuotas = fields.Char("Deuda que paga mensual")
+	app_ingreso_fijo = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Tienes un ingreso fijo?")
 	app_ingreso = fields.Char("Ingreso")
 	app_dia_cobro = fields.Integer("Dia de cobro")
-	app_cuotas = fields.Char("Deuda que paga mensual")
 	app_ingreso_pareja = fields.Char("Ingreso de la pareja")
+	app_asignaciones = fields.Char("Ingrso por asignaciones")
 	app_otros_ingresos = fields.Char("Otros ingresos")
-	app_asignaciones = fields.Char("Asignaciones")
-	app_ocupacion = fields.Char("ocupacion")
+	app_monto_de_cuota = fields.Float("Monto de cuota que puedes pagar")
+	app_ocupacion = fields.Char("Ocupacion")
+	app_ocupacion_anos = fields.Integer("Años que trabajas ahi?")
 	app_puesto = fields.Char("Puesto")
 	# Datos vivienda y transporte
 	app_vivienda = fields.Selection([
@@ -58,6 +62,19 @@ class ExtendsResPartner(models.Model):
 		('moto', 'Moto')
 	], "Medio de transporte")
 	app_prendario = fields.Char("Credito prendario")
+	# Nivel de estudios
+	app_nivel_estudio = fields.Selection([('sin_estudios', 'Sin estudios'), ('primario', 'Primario'), ('secundario', 'Secundario'), ('terciario', 'Terciario'), ('universitario', 'Universitario')], "Nivel de estudio")
+	# Preguntas De comportamiento
+	app_dia_de_pago = fields.Selection([('primer_dia_mes', 'Primer día del mes'), ('apenas_cobro', 'Apenas cobro'), ('dia_vencimiento', 'El mismo dia que vence')], "¿Si tienen que realizar un pago el día 20 de cada mes, cuando lo haces?")
+	app_utiliza_mercado_pago = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Utilizas Mercado Pago?")
+	app_utiliza_uala = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Utilizas Uala?")
+	app_mejor_dia_semana = fields.Selection([('lunes', 'Lunes'), ('martes', 'Martes'), ('miercoles', 'Miercoles'), ('jueves', 'Jueves'), ('viernes', 'Viernes'), ('sabado', 'Sabado'), ('domingo', 'Domingo')], "¿Cual es el mejor día de la semana?")
+	app_mejor_hora_dia = fields.Selection([('mañana', 'Mañana'), ('tarde', 'Tarde'), ('noche', 'Noche')], "¿Cual es la mejor hora del día?")
+	app_mejor_dia_mes = fields.Integer("¿Cual es el mejor día del mes?")
+	app_color_favorito = fields.Selection([('rojo', 'Rojo'), ('azul', 'Azul'), ('verde', 'Verde'), ('amarillo', 'Amarillo'), ('naranja', 'Naranja'), ('rosa', 'Rosa')], "¿Cual es tu color favorito?")
+	app_cantidad_perros = fields.Integer("¿Cuantos perros tenes?")
+	app_cantidad_gatos = fields.Integer("¿Cuantos gatos tenes?")
+	
 	# DNI frente
 	app_dni_frontal = fields.Binary("DNI frontal")
 	app_dni_frontal_completo = fields.Boolean("DNI frontal completo", compute='_compute_app_dni_frontal_completo')

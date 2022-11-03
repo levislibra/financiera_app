@@ -1,272 +1,336 @@
 <openerp>
-    <data>
-  
-      <!-- Vista Form Partner -->
-  
-      <record id="app_partner_form_inherited"  model="ir.ui.view">
-        <field name="name">App Movil Partner Extension form</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="financiera_base.partner_form_inherited"/>
-        <field name="arch" type="xml">
-					<xpath expr="//field[@name='mobile']" position='replace'>
-						<label for="mobile" string="Celular"/>
+	<data>
+
+		<!-- Vista Form Partner -->
+
+		<record id="app_partner_form_inherited" model="ir.ui.view">
+			<field name="name">App Movil Partner Extension form</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="financiera_base.partner_form_inherited" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='mobile']" position='replace'>
+					<label for="mobile" string="Celular" />
+					<div>
+						<field name="mobile" class="oe_inline" attrs="{'readonly': [('app_numero_celular_validado','=',True)]}" />
+						<field name="app_numero_celular_validado" class="oe_inline" readonly="1" />
+						<field name="app_codigo" readonly="1" invisible="1" class="oe_inline" />
+						<button name="wizard_datos_celular_validado_manual" string="Validar"
+							type="object" class="oe_inline" />
+					</div>
+				</xpath>
+			</field>
+		</record>
+
+		<!-- Agregamos info a la ficha del cliente -->
+
+		<record id="partner_info_declarativa_form" model="ir.ui.view">
+			<field name="name">Extension Partner form</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="financiera_prestamos.partner_form_inherited" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='state']" position='before'>
+					<button name="button_wizard_set_password" string="Cambiar contraseña" type="object" />
+					<button name="button_send_mail_password_generate" string="Generar y enviar password por email"
+						confirm="Seguro que desea realizar esta accion?" type="object" />
+				</xpath>
+				<xpath expr="//div[1]" position='before'>
+					<group col="11" style="margin:0px;padding:0px;">
 						<div>
-							<field name="mobile" class="oe_inline" attrs="{'readonly': [('app_numero_celular_validado','=',True)]}"/>
-							<field name="app_numero_celular_validado" class="oe_inline" readonly="1"/>
-							<field name="app_codigo" readonly="1" invisible="1" class="oe_inline"/>
-							<button name="wizard_datos_celular_validado_manual" string="Validar" 
-								type="object" class="oe_inline"/>
+							<button name="alerta_actualizar" string="Actualizar alertas" class="oe_highlight oe_inline" type="object" />
+							<label string="Ultima actualizacion:" class="oe_inline" />
+							<field name="alerta_ultima_actualizacion" style="color: red;padding-top:6px;" class="oe_inline" readonly="1" />
 						</div>
-					</xpath>
-        </field>
-      </record>
-
-				<!-- Agregamos info a la ficha del cliente -->
-
-			<record id="partner_info_declarativa_form"  model="ir.ui.view">
-				<field name="name">Extension Partner form</field>
-				<field name="model">res.partner</field>
-				<field name="inherit_id" ref="financiera_prestamos.partner_form_inherited"/>
-				<field name="arch" type="xml">
-					<xpath expr="//field[@name='state']" position='before'>
-						<button name="button_wizard_set_password" string="Cambiar contraseña" type="object"/>
-						<button name="button_send_mail_password_generate" string="Generar y enviar password por email" 
-							confirm="Seguro que desea realizar esta accion?" type="object"/>
-					</xpath>
-					<xpath expr="//div[1]" position='before'>
-						<group col="11" style="margin:0px;padding:0px;">
+					</group>
+					<label string="Datos internos" style="margin:0px;padding:0px;" />
+					<group name='alertas' style="background-color:lightsteelblue;padding:1px;margin:0px;" col="12">
+						<group col="1">
 							<div>
-								<button name="alerta_actualizar" string="Actualizar alertas" class="oe_highlight oe_inline" type="object"/>
-								<label string="Ultima actualizacion:" class="oe_inline"/>
-								<field name="alerta_ultima_actualizacion" style="color: red;padding-top:6px;" class="oe_inline" readonly="1"/>
+								<label string="IP no confiable" class="oe_inline" />
+								<field name='app_ip_registro_no_confiable' class="oe_inline" readonly="1" />
 							</div>
+							<button string="No confiar IP" name="button_app_ip_registro_no_confiable" type="object"
+								style="margin:0px;padding:0px;font-size:10px;" attrs="{'invisible': [('app_ip_registro_no_confiable','=',True)]}"
+								class="oe_link" confirm="Esta seguro que desea marcar la IP como no confiable?" />
+							<button string="Confiar en IP" name="button_app_ip_registro_confiable" type="object"
+								style="margin:0px;padding:0px;font-size:10px;" attrs="{'invisible': [('app_ip_registro_no_confiable','=',False)]}"
+								class="oe_link" confirm="Esta seguro que desea marcar la IP como confiable?" />
+							<div>
+								<label string="Usuario bloqueado" class="oe_inline" />
+								<field name="app_estado_bloqueado" class="oe_inline" readonly="1" />
+							</div>
+							<button string="Bloquear usuario" name="button_app_estado_bloqueado" type="object"
+								style="margin:0px;padding:0px;font-size:10px;" attrs="{'invisible': [('app_estado_bloqueado','=',True)]}"
+								class="oe_link" confirm="Esta seguro que desea bloquear el usuario?" />
+							<button string="Desbloquear usuario" name="button_app_estado_no_bloqueado" type="object"
+								style="margin:0px;padding:0px;font-size:10px;" attrs="{'invisible': [('app_estado_bloqueado','=',False)]}"
+								class="oe_link" confirm="Esta seguro que desea desbloquear el usuario?" />
 						</group>
-						<label string="Datos internos" style="margin:0px;padding:0px;"/>
-						<group name='alertas' style="background-color:lightsteelblue;padding:1px;margin:0px;" col="12">
-							<group col="1">
-								<div>
-									<label string="IP no confiable" class="oe_inline"/>
-									<field name='app_ip_registro_no_confiable' class="oe_inline" readonly="1"/>
-								</div>
-								<button string="No confiar IP" name="button_app_ip_registro_no_confiable" type="object"
-									style="margin:0px;padding:0px;font-size:10px;" attrs="{'invisible': [('app_ip_registro_no_confiable','=',True)]}"
-									class="oe_link"	confirm="Esta seguro que desea marcar la IP como no confiable?"/>
-								<button string="Confiar en IP" name="button_app_ip_registro_confiable" type="object"
-									style="margin:0px;padding:0px;font-size:10px;" attrs="{'invisible': [('app_ip_registro_no_confiable','=',False)]}"
-									class="oe_link"	confirm="Esta seguro que desea marcar la IP como confiable?"/>
-								<div>
-									<label string="Usuario bloqueado" class="oe_inline"/>
-									<field name="app_estado_bloqueado" class="oe_inline" readonly="1"/>
-								</div>
-								<button string="Bloquear usuario" name="button_app_estado_bloqueado" type="object"
-									style="margin:0px;padding:0px;font-size:10px;" attrs="{'invisible': [('app_estado_bloqueado','=',True)]}"
-									class="oe_link"	confirm="Esta seguro que desea bloquear el usuario?"/>
-								<button string="Desbloquear usuario" name="button_app_estado_no_bloqueado" type="object"
-									style="margin:0px;padding:0px;font-size:10px;" attrs="{'invisible': [('app_estado_bloqueado','=',False)]}"
-									class="oe_link"	confirm="Esta seguro que desea desbloquear el usuario?"/>
-							</group>
-							<group col="1">
-								<label string="Misma IP"/>
-								<h2 style="color: orange;"><field name='alerta_ip_multiple_registros' readonly="1"/></h2>
-								<label string="Mismo celular"/>
-								<h2 style="color: orange;"><field name='alerta_celular_multiple_partner' readonly="1"/></h2>
-							</group>
-							<group col="1">
-								<label string="Celular en contactos"/>
-								<h2><field name='alerta_celular_como_contacto' readonly="1"/></h2>
-								<label string="Domicilio similar"/>
-								<h2><field name='alerta_domicilio_similar' readonly="1"/></h2>
-							</group>
-							<group col="1">
-								<label string="Prestamos activos"/>
-								<h4><field name='alerta_prestamos_activos'/></h4>
-								<label string="Prestamos cobrados"/>
-								<h4 style="color: green;"><field name='alerta_prestamos_cobrados'/></h4>
-							</group>
-							<group col="1">
-								<label string="Cuotas activas"/>
-								<h4><field name='alerta_cuotas_activas'/></h4>
-								<label string="Cuotas cobradas"/>
-								<h4 style="color: green;"><field name='alerta_cuotas_cobradas'/></h4>
-							</group>
-							<group col="1">
-								<label string="Normal"/>
-								<h4><field name='alerta_cuotas_normal'/></h4>
-								<label string="Preventiva"/>
-								<h4><field name='alerta_cuotas_preventivas'/></h4>
-							</group>
-							<group col="1">
-								<label string="Mora temprana"/>
-								<h4 style="color: orange;"><field name='alerta_cuotas_temprana'/></h4>
-								<label string="Mora media"/>
-								<h4 style="color: red;"><field name='alerta_cuotas_media'/></h4>
-							</group>
-							<group col="1">
-								<label string="Mora tardia"/>
-								<h4 style="color: red;"><field name='alerta_cuotas_tardia'/></h4>
-								<label string="Incobrable"/>
-								<h4 style="color: red;"><field name='alerta_cuotas_incobrable'/></h4>
-							</group>
-              <group col="1">
-								<label string="Fecha ultimo pago"/>
-								<h4 style="color: red;"><field name='alerta_fecha_ultimo_pago'/></h4>
-								<label string="Dias del ultimo pago"/>
-								<h4 style="color: red;"><field name='alerta_dias_ultimo_pago'/></h4>
-							</group>
+						<group col="1">
+							<label string="Misma IP" />
+							<h2 style="color: orange;">
+								<field name='alerta_ip_multiple_registros' readonly="1" />
+							</h2>
+							<label string="Mismo celular" />
+							<h2 style="color: orange;">
+								<field name='alerta_celular_multiple_partner' readonly="1" />
+							</h2>
 						</group>
-						<field name="alerta_ver_y_compartir" invisible="1"/>
-						<label string="Datos en otras financieras" style="margin:0px;padding:0px;"/>
-						<group style="background-color:lightsteelblue;padding:6px;margin-top:0px;"
-						 attrs="{'invisible': [('alerta_ver_y_compartir', '=', True)]}">
-						 <label string="No esta compartiendo datos." style="margin:0px;padding:0px;"/>
+						<group col="1">
+							<label string="Celular en contactos" />
+							<h2>
+								<field name='alerta_celular_como_contacto' readonly="1" />
+							</h2>
+							<label string="Domicilio similar" />
+							<h2>
+								<field name='alerta_domicilio_similar' readonly="1" />
+							</h2>
 						</group>
-						<group name='alertas_compartidas' col="5" style="background-color:lightsteelblue;padding:6px;margin-top:0px;"
-							attrs="{'invisible': [('alerta_ver_y_compartir', '=', False)]}">
-							<group col="1">
-								<label string="Registros"/>
-								<h4><field name='alerta_registrado_financieras' readonly="1"/></h4>
-							</group>
-							<group col="1">
-								<label string="Prestamos activos"/>
-								<h4><field name='alerta_prestamos_activos_financieras' readonly="1"/></h4>
-							</group>
-							<group col="1">
-								<label string="Cuotas en mora"/>
-								<h4><field name='alerta_cuotas_vencidas_financieras' readonly="1"/></h4>
-							</group>
-							<group col="1">
-								<label string="Compromiso mensual estimado"/>
-								<h4><field name='alerta_compromiso_mensual_financieras' readonly="1"/></h4>
-							</group>
-							<group col="1">
-								<label string="IP no confiable"/>
-								<h4><field name='alerta_ip_no_confiable_financieras' readonly="1"/></h4>
-							</group>
+						<group col="1">
+							<label string="Prestamos activos" />
+							<h4>
+								<field name='alerta_prestamos_activos' />
+							</h4>
+							<label string="Prestamos cobrados" />
+							<h4 style="color: green;">
+								<field name='alerta_prestamos_cobrados' />
+							</h4>
 						</group>
-					</xpath>
-					<xpath expr="//page[5]" position='before'>
-						<page name="alertas_detalle" string="Alertas">
-							<group col="1">
-								<group>
-									<field name="alerta_ip_multiple_registros_ids">
-										<tree limit="5">
-											<field name="name"/>
-											<field name="main_id_number"/>
-											<field name="mobile"/>
-											<field name="email"/>
-										</tree>
-									</field>
-								</group>
-								<group>
-									<field name="alerta_celular_multiple_partner_ids">
-										<tree limit="5">
-											<field name="name"/>
-											<field name="main_id_number"/>
-											<field name="mobile"/>
-											<field name="email"/>
-										</tree>
-									</field>
-								</group>
-								<group>
-									<field name="alerta_celular_como_contacto_ids">
-										<tree limit="5">
-											<field name="name"/>
-											<field name="relacion"/>
-											<field name="movil"/>
-											<field name="email"/>
-										</tree>
-									</field>
-								</group>
-								<group>
-									<field name="alerta_domicilio_similar_ids">
-										<tree limit="5">
-											<field name="name"/>
-											<field name="main_id_number"/>
-											<field name="mobile"/>
-											<field name="email"/>
-										</tree>
-									</field>
-								</group>
-							</group>
-						</page>
-					</xpath>
-					<xpath expr="//group[@name='riskgroup']" position='before'>
-						<group string="Portal y App movil" col="3" style="background-color: #F2F2F2">
+						<group col="1">
+							<label string="Cuotas activas" />
+							<h4>
+								<field name='alerta_cuotas_activas' />
+							</h4>
+							<label string="Cuotas cobradas" />
+							<h4 style="color: green;">
+								<field name='alerta_cuotas_cobradas' />
+							</h4>
+						</group>
+						<group col="1">
+							<label string="Normal" />
+							<h4>
+								<field name='alerta_cuotas_normal' />
+							</h4>
+							<label string="Preventiva" />
+							<h4>
+								<field name='alerta_cuotas_preventivas' />
+							</h4>
+						</group>
+						<group col="1">
+							<label string="Mora temprana" />
+							<h4 style="color: orange;">
+								<field name='alerta_cuotas_temprana' />
+							</h4>
+							<label string="Mora media" />
+							<h4 style="color: red;">
+								<field name='alerta_cuotas_media' />
+							</h4>
+						</group>
+						<group col="1">
+							<label string="Mora tardia" />
+							<h4 style="color: red;">
+								<field name='alerta_cuotas_tardia' />
+							</h4>
+							<label string="Incobrable" />
+							<h4 style="color: red;">
+								<field name='alerta_cuotas_incobrable' />
+							</h4>
+						</group>
+						<group col="1">
+							<label string="Fecha ultimo pago" />
+							<h4 style="color: red;">
+								<field name='alerta_fecha_ultimo_pago' />
+							</h4>
+							<label string="Dias del ultimo pago" />
+							<h4 style="color: red;">
+								<field name='alerta_dias_ultimo_pago' />
+							</h4>
+						</group>
+					</group>
+					<field name="alerta_ver_y_compartir" invisible="1" />
+					<label string="Datos en otras financieras" style="margin:0px;padding:0px;" />
+					<group style="background-color:lightsteelblue;padding:6px;margin-top:0px;"
+						attrs="{'invisible': [('alerta_ver_y_compartir', '=', True)]}">
+						<label string="No esta compartiendo datos." style="margin:0px;padding:0px;" />
+					</group>
+					<group name='alertas_compartidas' col="5" style="background-color:lightsteelblue;padding:6px;margin-top:0px;"
+						attrs="{'invisible': [('alerta_ver_y_compartir', '=', False)]}">
+						<group col="1">
+							<label string="Registros" />
+							<h4>
+								<field name='alerta_registrado_financieras' readonly="1" />
+							</h4>
+						</group>
+						<group col="1">
+							<label string="Prestamos activos" />
+							<h4>
+								<field name='alerta_prestamos_activos_financieras' readonly="1" />
+							</h4>
+						</group>
+						<group col="1">
+							<label string="Cuotas en mora" />
+							<h4>
+								<field name='alerta_cuotas_vencidas_financieras' readonly="1" />
+							</h4>
+						</group>
+						<group col="1">
+							<label string="Compromiso mensual estimado" />
+							<h4>
+								<field name='alerta_compromiso_mensual_financieras' readonly="1" />
+							</h4>
+						</group>
+						<group col="1">
+							<label string="IP no confiable" />
+							<h4>
+								<field name='alerta_ip_no_confiable_financieras' readonly="1" />
+							</h4>
+						</group>
+					</group>
+				</xpath>
+				<xpath expr="//page[5]" position='before'>
+					<page name="alertas_detalle" string="Alertas">
+						<group col="1">
 							<group>
-								<separator string="Alta de cliente" colspan="2"/>
-									<field name="app_estado_portal" string="Estado del alta"/>
-									<field name="app_ip_registro"/>
-								<separator string="DNI y selfie" colspan="2"/>
-									<field name="app_dni_frontal" readonly="0"/>
-									<!-- widget="image" class="oe_avatar" -->
-									<field name="app_dni_frontal_download_name" invisible="1"/>
-									<field name="app_dni_frontal_download" string=" " filename="app_dni_frontal_download_name" readonly="1"/>
-									<!-- <field name="app_dni_frontal_completo"/> -->
-
-									<field name="app_dni_posterior" readonly="0"/>
-									<!-- widget="image" class="oe_avatar" -->
-									<field name="app_dni_posterior_download_name" invisible="1"/>
-									<field name="app_dni_posterior_download" string=" " filename="app_dni_posterior_download_name" readonly="1"/>
-									<!-- <field name="app_dni_posterior_completo"/> -->
-
-									<field name="app_selfie" readonly="0"/>
-									<!-- widget="image" class="oe_avatar" -->
-									<field name="app_selfie_download_name" invisible="1"/>
-									<field name="app_selfie_download" string=" " filename="app_selfie_download_name" readonly="1"/>
-									<!-- <field name="app_selfie_completo"/> -->
-									<label string=" "/>
-									<button name="button_asignar_selfie_como_perfil" string="Asignar como imagen de perfil" type="object"/>
-							</group>
-							<group col="1">
-								<group>
-									<separator string="Datos personales" colspan="2"/>
-									<field name="app_nombre"/>
-									<field name="app_apellido"/>
-									<field name="app_documento"/>
-									<field name="app_nacimiento"/>
-									<field name="app_edad"/>
-									<!-- <separator string="Datos de domicilio" colspan="2"/>
-									<field name="app_direccion"/>
-									<field name="app_numero"/>
-									<field name="app_cp"/>
-									<field name="app_telefono"/>
-									<field name="app_localidad"/>
-									<field name="app_provincia"/> -->
-									<separator string="CBU" colspan="2"/>
-									<field name="app_banco_haberes_numero_entidad"/>
-									<field name="app_banco_haberes"/>
-									<field name="app_cbu"/>
-									<field name="app_alias"/>
-									<separator string="Numero de celular" colspan="2"/>
-									<field name="app_numero_celular"/>
-								</group>
+								<field name="alerta_ip_multiple_registros_ids">
+									<tree limit="5">
+										<field name="name" />
+										<field name="main_id_number" />
+										<field name="mobile" />
+										<field name="email" />
+									</tree>
+								</field>
 							</group>
 							<group>
-                <separator string="Datos de ingresos" colspan="2"/>
-                  <field name="app_ingreso"/>
-									<field name="app_dia_cobro"/>
-                  <field name="app_cuotas"/>
-                  <field name="app_ingreso_pareja"/>
-                  <field name="app_otros_ingresos"/>
-                  <field name="app_asignaciones"/>
-                  <field name="app_ocupacion"/>
-                  <field name="app_puesto"/>
-                <separator string="Datos de vivienda y transporte" colspan="2"/>
-                  <field name="app_vivienda"/>
-                  <field name="app_alquiler"/>
-                  <field name="app_hipoteca"/>
-                  <field name="app_vivienda_tiempo"/>
-                  <field name="app_vivienda_conviven"/>
-                  <field name="app_vivienda_hijos"/>
-                  <field name="app_portal_transporte"/>
-                  <field name="app_prendario"/>
+								<field name="alerta_celular_multiple_partner_ids">
+									<tree limit="5">
+										<field name="name" />
+										<field name="main_id_number" />
+										<field name="mobile" />
+										<field name="email" />
+									</tree>
+								</field>
+							</group>
+							<group>
+								<field name="alerta_celular_como_contacto_ids">
+									<tree limit="5">
+										<field name="name" />
+										<field name="relacion" />
+										<field name="movil" />
+										<field name="email" />
+									</tree>
+								</field>
+							</group>
+							<group>
+								<field name="alerta_domicilio_similar_ids">
+									<tree limit="5">
+										<field name="name" />
+										<field name="main_id_number" />
+										<field name="mobile" />
+										<field name="email" />
+									</tree>
+								</field>
 							</group>
 						</group>
-					</xpath>
-				</field>
-			</record>
+					</page>
+				</xpath>
+				<xpath expr="//group[@name='riskgroup']" position='before'>
+					<group string="Datos declarativos del cliente" col="4" style="background-color: lavender;">
+						<group col="1">
+							<group string="Alta de cliente" colspan="2">
+								<field name="app_estado_portal" string="Estado del alta" />
+								<field name="app_ip_registro" />
+							</group>
+							<group string="Datos personales">
+								<field name="app_nombre" />
+								<field name="app_apellido" />
+								<field name="app_documento" />
+								<field name="app_nacimiento" />
+								<field name="app_edad" />
+							</group>
+							<group string="DNI y selfie">
+								<field name="app_dni_frontal" readonly="0" />
+								<field name="app_dni_frontal_download_name" invisible="1" />
+								<field name="app_dni_frontal_download" string=" " filename="app_dni_frontal_download_name" readonly="1" />
 
-			<!-- <record id="partner_form_inherited_session_cobranza"  model="ir.ui.view">
+								<field name="app_dni_posterior" readonly="0" />
+								<field name="app_dni_posterior_download_name" invisible="1" />
+								<field name="app_dni_posterior_download" string=" " filename="app_dni_posterior_download_name" readonly="1" />
+
+								<field name="app_selfie" readonly="0" />
+								<field name="app_selfie_download_name" invisible="1" />
+								<field name="app_selfie_download" string=" " filename="app_selfie_download_name" readonly="1" />
+								<label string=" " />
+								<button name="button_asignar_selfie_como_perfil" string="Asignar como imagen de perfil" type="object" />
+							</group>
+						</group>
+						<group col="1">
+							<group string="Nivel de estudios">
+								<field name="app_nivel_estudio"/>
+							</group>
+							<group string="Datos de Comportamiento">
+								<field name="app_dia_de_pago"/>
+								<field name="app_utiliza_mercado_pago"/>
+								<field name="app_utiliza_uala"/>
+								<field name="app_mejor_dia_semana"/>
+								<field name="app_mejor_hora_dia"/>
+								<field name="app_mejor_dia_mes"/>
+								<field name="app_color_favorito"/>
+								<field name="app_cantidad_perros"/>
+								<field name="app_cantidad_gatos"/>
+							</group>
+							<group string="CBU">
+								<field name="app_banco_haberes_numero_entidad" />
+								<field name="app_banco_haberes" />
+								<field name="app_cbu" />
+								<field name="app_alias" />
+							</group>
+							<!-- <group string="Datos de domicilio">
+								<field name="app_direccion"/>
+								<field name="app_numero"/>
+								<field name="app_cp"/>
+								<field name="app_telefono"/>
+								<field name="app_localidad"/>
+								<field name="app_provincia"/>
+							</group> -->
+							<group string="Celular">
+								<field name="app_numero_celular" />
+							</group>
+						</group>
+						<group col="1">
+							<group string="Datos de ingresos y egreso">
+								<field name="app_deuda"/>
+								<field name="app_cuotas"/>
+								
+								<field name="app_ingreso_fijo"/>
+								<field name="app_ingreso"/>
+								<field name="app_dia_cobro"/>
+								<field name="app_cuotas"/>
+								<field name="app_ingreso_pareja"/>
+								<field name="app_otros_ingresos"/>
+								<field name="app_asignaciones"/>
+								<field name="app_ocupacion"/>
+								<field name="app_ocupacion_anos"/>
+								<field name="app_puesto"/>
+							</group>
+							<group string="Datos de vivienda y transporte">
+								<field name="app_vivienda"/>
+								<field name="app_alquiler"/>
+								<field name="app_hipoteca"/>
+								<field name="app_vivienda_tiempo"/>
+								<field name="app_vivienda_conviven"/>
+								<field name="app_vivienda_hijos"/>
+								<field name="app_portal_transporte"/>
+								<field name="app_prendario"/>
+							</group>
+						</group>
+						<!-- <group col="1">
+							
+						</group> -->
+					</group>
+				</xpath>
+			</field>
+		</record>
+
+		<!-- <record id="partner_form_inherited_session_cobranza"  model="ir.ui.view">
 				<field name="name">Extension Partner form</field>
 				<field name="model">res.partner</field>
 				<field name="inherit_id" ref="financiera_cobranza_mora.cobranza_mora_cliente_sesion_form"/>
@@ -278,27 +342,27 @@
 				</field>
 			</record> -->
 
-      <record id="cobranza_mora_cliente_tree"  model="ir.ui.view">
-				<field name="name">Extension Partner form</field>
-				<field name="model">res.partner</field>
-				<field name="inherit_id" ref="financiera_cobranza_mora.cobranza_mora_cliente_tree"/>
-				<field name="arch" type="xml">
-					<xpath expr="//field[@name='mora_id']" position='after'>
-						<field name="alerta_dias_ultimo_pago"/>
-            <field name="alerta_fecha_ultimo_pago"/>
-					</xpath>
-				</field>
-			</record>
-  
-	<!-- Para validacion presencial -->
+		<record id="cobranza_mora_cliente_tree" model="ir.ui.view">
+			<field name="name">Extension Partner form</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="financiera_cobranza_mora.cobranza_mora_cliente_tree" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='mora_id']" position='after'>
+					<field name="alerta_dias_ultimo_pago" />
+					<field name="alerta_fecha_ultimo_pago" />
+				</xpath>
+			</field>
+		</record>
 
-			<record id="datos_celular_validado_form" model="ir.ui.view">
-				<field name="name">res.partner</field>
-				<field name="model">res.partner</field>
-				<field name="arch" type="xml">
-					<form string="Plan" create="false" delete="false">
-						<sheet>
-							<script>
+		<!-- Para validacion presencial -->
+
+		<record id="datos_celular_validado_form" model="ir.ui.view">
+			<field name="name">res.partner</field>
+			<field name="model">res.partner</field>
+			<field name="arch" type="xml">
+				<form string="Plan" create="false" delete="false">
+					<sheet>
+						<script>
 								$(document).ready(function(){
 									$('.modal-content').css({
 										'width': '100%',
@@ -306,22 +370,22 @@
 									});
 								});
 							</script>
-							<group col="1">
-								<field name="app_numero_celular" required="1"/>
-								<field name="app_codigo_introducido_usuario" required="0"/>
-								<field name="app_codigo" invisible="1"/>
-								<field name="app_button_solicitar_codigo_fecha_reset" invisible="1"/>
-								<div>
-									<button name="button_solicitar_codigo_portal" class="oe_highlight oe_inline" 
-										string="Enviar codigo" type="object"/>
-									<button name="button_confirmar_datos_numero_celular" class="perfil_portal_button_edit oe_inline" 
-										string="Confirmar datos" type="object"/>
-								</div>
-							</group>
-						</sheet>
-					</form>
-				</field>
-			</record>
+						<group col="1">
+							<field name="app_numero_celular" required="1" />
+							<field name="app_codigo_introducido_usuario" required="0" />
+							<field name="app_codigo" invisible="1" />
+							<field name="app_button_solicitar_codigo_fecha_reset" invisible="1" />
+							<div>
+								<button name="button_solicitar_codigo_portal" class="oe_highlight oe_inline"
+									string="Enviar codigo" type="object" />
+								<button name="button_confirmar_datos_numero_celular" class="perfil_portal_button_edit oe_inline"
+									string="Confirmar datos" type="object" />
+							</div>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
 
-    </data>
-  </openerp>
+	</data>
+</openerp>
