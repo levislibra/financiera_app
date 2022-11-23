@@ -7,6 +7,7 @@ class AppConfig(models.Model):
 
 	name = fields.Char('Nombre')
 	# Parametros de la solicitud
+	desactivar_solicitud_prestamo = fields.Boolean('Desactivar solicitud de prestamo')
 	monto_minimo_solicitud = fields.Float('Monto minimo de solicitud')
 	monto_maximo_solicitud = fields.Float('Monto maximo de solicitud')
 	ingreso_minimo_solicitud = fields.Float('Ingreso minimo requerido', help='Inferior a este monto bloqueara al dni solicitante.')

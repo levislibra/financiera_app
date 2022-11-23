@@ -1,113 +1,113 @@
 <openerp>
-  <data>
+	<data>
 
-    <!-- Financiera App configuracion -->
+		<!-- Financiera App configuracion -->
 
-    <record model="ir.ui.view" id="app_config_tree">
-      <field name="name">app.config.tree</field>
-      <field name="model">app.config</field>
-      <field name="arch" type="xml">
-        <tree create="false" delete="false">
-          <field name="name"/>
-          <field name="company_id" groups="base.group_erp_manager"/>
-        </tree>
-      </field>
-    </record>
+		<record model="ir.ui.view" id="app_config_tree">
+			<field name="name">app.config.tree</field>
+			<field name="model">app.config</field>
+			<field name="arch" type="xml">
+				<tree create="false" delete="false">
+					<field name="name" />
+					<field name="company_id" groups="base.group_erp_manager" />
+				</tree>
+			</field>
+		</record>
 
-    <record id="app_config_form" model="ir.ui.view">
-        <field name="name">app.config.tree</field>
-        <field name="model">app.config</field>
-        <field name="arch" type="xml">
-            <form string="Configuracion" create="false" delete="false">
-              <sheet>
-                <group>
-                  <group>
-                    <field name="company_id" groups="base.group_erp_manager"/>
-										<field name="name"/>
-                  </group>
-                  <group>
-                  </group>
-                </group>
-                <notebook>
-									<page name="generales" string="Opciones generales">
-										<group>
-											<field name="app_ver_y_compartir_riesgo_cliente"/>
-										</group>
-										<group>
-											<group string="Generales">
-												<field name="monto_minimo_solicitud"/>
-												<field name="monto_maximo_solicitud"/>
-												<field name="ingreso_minimo_solicitud"/>
-											</group>
-											<group>
-												<field name="numero_whatsapp_soporte"/>
-												<field name="mensaje_sin_ofertas"/>
-											</group>
-										</group>
-									</page>
-									<page name="planes_disponibles" string="Planes disponibles">
-										<group>
-											<group string="Planes disponibles">
-												<field name="planes_disponibles_ids" widget="many2many_tags" domain="[('state', '=', 'confirmado')]"/>
-											</group>
-											<group></group>
-										</group>
-									</page>
-									<page name="requerimientos" string="Requerimientos para solicitud">
-										<group>
-											<group name="requerimientos" string="Requerimientos del Portal y App">
-												<field name="app_requiere_direccion"/>
-												<field name="app_requiere_cbu"/>
-												<field name="app_requiere_trabajo_actual"/>
-												<field name="app_requiere_contactos"/>
-												<field name="app_requeire_tarjeta_debito"/>
-												<field name="app_requiere_dni_frontal"/>
-												<field name="app_requiere_dni_dorso"/>
-												<field name="app_requiere_selfie"/>
-												<field name="app_requiere_banco"/>
-												<field name="app_requiere_fecha_cobro"/>
-												<field name="app_requiere_recibo_sueldo"/>
-												<field name="app_requiere_servicio"/>
-												<field name="app_requiere_firma"/>
-											</group>
-											<group></group>
-										</group>
-									</page>
-                  <page name="portal_web" string="Portal web">
-                    <group>
-                      <field name="portal_sucursal_id"/>
-											<field name="portal_responsable_id"/>
-											<field name="portal_origen_id"/>
-                    </group>
-									</page>
-									<page name="solicitudes" string="App movil">
-                    <group>
-                      <field name="app_sucursal_id"/>
-											<field name="app_responsable_id"/>
-											<field name="app_origen_id"/>
-                    </group>
-                  </page>
-                </notebook>
-              </sheet>
-            </form>
-        </field>
-    </record>
+		<record id="app_config_form" model="ir.ui.view">
+			<field name="name">app.config.tree</field>
+			<field name="model">app.config</field>
+			<field name="arch" type="xml">
+				<form string="Configuracion" create="false" delete="false">
+					<sheet>
+						<group>
+							<group>
+								<field name="company_id" groups="base.group_erp_manager" />
+								<field name="name" />
+							</group>
+							<group></group>
+						</group>
+						<notebook>
+							<page name="generales" string="Opciones generales">
+								<group>
+									<field name="app_ver_y_compartir_riesgo_cliente" />
+								</group>
+								<group>
+									<group string="Generales">
+										<field name="desactivar_solicitud_prestamo" />
+										<field name="monto_minimo_solicitud" />
+										<field name="monto_maximo_solicitud" />
+										<field name="ingreso_minimo_solicitud" />
+									</group>
+									<group>
+										<field name="numero_whatsapp_soporte" />
+										<field name="mensaje_sin_ofertas" />
+									</group>
+								</group>
+							</page>
+							<page name="planes_disponibles" string="Planes disponibles">
+								<group>
+									<group string="Planes disponibles">
+										<field name="planes_disponibles_ids" widget="many2many_tags" domain="[('state', '=', 'confirmado')]" />
+									</group>
+									<group></group>
+								</group>
+							</page>
+							<page name="requerimientos" string="Requerimientos para solicitud">
+								<group>
+									<group name="requerimientos" string="Requerimientos del Portal y App">
+										<field name="app_requiere_direccion" />
+										<field name="app_requiere_cbu" />
+										<field name="app_requiere_trabajo_actual" />
+										<field name="app_requiere_contactos" />
+										<field name="app_requeire_tarjeta_debito" />
+										<field name="app_requiere_dni_frontal" />
+										<field name="app_requiere_dni_dorso" />
+										<field name="app_requiere_selfie" />
+										<field name="app_requiere_banco" />
+										<field name="app_requiere_fecha_cobro" />
+										<field name="app_requiere_recibo_sueldo" />
+										<field name="app_requiere_servicio" />
+										<field name="app_requiere_firma" />
+									</group>
+									<group></group>
+								</group>
+							</page>
+							<page name="portal_web" string="Portal web">
+								<group>
+									<field name="portal_sucursal_id" />
+									<field name="portal_responsable_id" />
+									<field name="portal_origen_id" />
+								</group>
+							</page>
+							<page name="solicitudes" string="App movil">
+								<group>
+									<field name="app_sucursal_id" />
+									<field name="app_responsable_id" />
+									<field name="app_origen_id" />
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
 
-    <record model="ir.actions.act_window" id="app_config_action">
-      <field name="name">Configuracion</field>
-      <field name="res_model">app.config</field>
-      <field name="view_mode">tree,form</field>
-      <field name="view_id" ref="app_config_tree"/>
-    </record>
+		<record model="ir.actions.act_window" id="app_config_action">
+			<field name="name">Configuracion</field>
+			<field name="res_model">app.config</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="app_config_tree" />
+		</record>
 
-    <!-- Top menu item -->
-    
-    <menuitem name="Autogestión" id="menu_app" 
-    web_icon="financiera_app,static/description/icon.png"
-    groups="financiera_app.manager"/>
-    
+		<!-- Top menu item -->
+
+		<menuitem name="Autogestión" id="menu_app"
+			web_icon="financiera_app,static/description/icon.png"
+			groups="financiera_app.manager" />
+
 		<menuitem name="Configuracion" id="menu_config_action" sequence="100"
-			parent="menu_app" action="app_config_action"/>
+			parent="menu_app" action="app_config_action" />
 
-  </data>
+	</data>
 </openerp>
