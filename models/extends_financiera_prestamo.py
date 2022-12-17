@@ -4,6 +4,7 @@ from openerp import models, fields, api
 from openerp.exceptions import UserError, ValidationError
 import base64
 import re
+
 class ExtendsFinancieraPrestamo(models.Model):
 	_name = 'financiera.prestamo'
 	_inherit = 'financiera.prestamo'
@@ -267,19 +268,25 @@ class ExtendsFinancieraPrestamo(models.Model):
 		else:
 			self.app_requerimientos_pendientes = False
 
-	@api.multi
-	def ver_prestamo(self):
-		view_id = self.env.ref('financiera_prestamos.financiera_prestamo_form').id
-		context = self._context.copy()
-		return {
-					'name': 'Prestamos',
-					'view_type': 'form',
-					'view_mode': 'form',
-					'views' : [(view_id,'form')],
-					'res_model': 'financiera.prestamo',
-					'view_id': view_id,
-					'type': 'ir.actions.act_window',
-					'res_id': self.id,
-					'target': 'current',
-					'context': context,
-			}
+class ExtendsFinancieraPrestamoCuota(models.Model):
+	_name = 'financiera.prestamo.cuota'
+	_inherit = 'financiera.prestamo.cuota'
+
+	@api.model
+	def _cron_uptade_punitorio(self):
+		company_obj = self.pool.get('res.company')
+		comapny_ids = company_obj.search(self.env.cr, self.env.uid, [])
+		for _id in comapny_ids:
+			company_id = company_obj.browse(self.env.cr, self.env.uid, _id)
+			cuota_obj = self.pool.get('financiera.prestamo.cuota')
+			cuota_ids = cuota_obj.search(self.env.cr, self.env.uid, [
+				('company_id','=', company_id.id),
+				('state','in',['precancelada','cobrada','cobrada_con_reintegro','refinanciada']),
+				('punitorio_fijar','=',False),
+			])
+			for _id in cuota_ids:
+				cuota_id = cuota_obj.browse(self.env.cr, self.env.uid, _id)
+				cuota_id.write({
+					'punitorio_fijar': True,
+					'punitorio_manual': cuota_id.punitorio,
+				})

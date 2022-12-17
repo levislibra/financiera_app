@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <openerp>
-    <data noupdate="1">
+	<data noupdate="1">
 
-			<record id="ir_cron_actualizar_alerta_partner" model="ir.cron">
-					<field name="name">Actualizar alertas en clientes</field>
-					<field name="user_id" ref="base.user_root" />
-					<field name="interval_number">1</field>
-					<field name="interval_type">days</field>
-					<field name="numbercall">-1</field>
-					<field name="doall" eval="False"/>
-					<field name="nextcall" >2019-01-01 02:00:00</field>
-					<field name="model">res.partner</field>
-					<field name="function">_actualizar_alerta_partners</field>
-			</record>
+		<record id="ir_cron_actualizar_alerta_partner" model="ir.cron">
+			<field name="name">Actualizar alertas en clientes</field>
+			<field name="user_id" ref="base.user_root" />
+			<field name="interval_number">1</field>
+			<field name="interval_type">days</field>
+			<field name="numbercall">-1</field>
+			<field name="doall" eval="False" />
+			<field name="nextcall">2019-01-01 02:00:00</field>
+			<field name="model">res.partner</field>
+			<field name="function">_actualizar_alerta_partners</field>
+		</record>
 
-			<record id="ir_cron_prestamos_cbu_to_banco" model="ir.cron">
-				<field name="name">Actualizar banco segun CBU</field>
-				<field name="user_id" ref="base.user_root" />
-				<field name="interval_number">1</field>
-				<field name="interval_type">days</field>
-				<field name="numbercall">-1</field>
-				<field name="doall" eval="False"/>
-				<field name="nextcall" >2019-01-01 02:00:00</field>
-				<field name="model">financiera.prestamo</field>
-				<field name="function">_cron_prestamos_cbu_to_banco</field>
+		<record id="ir_cron_prestamos_cbu_to_banco" model="ir.cron">
+			<field name="name">Actualizar banco segun CBU</field>
+			<field name="user_id" ref="base.user_root" />
+			<field name="interval_number">1</field>
+			<field name="interval_type">days</field>
+			<field name="numbercall">-1</field>
+			<field name="doall" eval="False" />
+			<field name="nextcall">2019-01-01 02:00:00</field>
+			<field name="model">financiera.prestamo</field>
+			<field name="function">_cron_prestamos_cbu_to_banco</field>
+		</record>
+
+		<record id="ir_cron_uptade_punitorio" model="ir.cron">
+			<field name="name">Actualizar punitorio cobrado</field>
+			<field name="user_id" ref="base.user_root" />
+			<field name="interval_number">1</field>
+			<field name="interval_type">days</field>
+			<field name="numbercall">-1</field>
+			<field name="doall" eval="False" />
+			<field name="nextcall">2019-01-01 02:00:00</field>
+			<field name="model">financiera.prestamo.cuota</field>
+			<field name="function">_cron_uptade_punitorio</field>
 		</record>
 
 	</data>
