@@ -165,6 +165,7 @@
 			<field name="name">Datos para el seguro</field>
 			<field name="res_model">financiera.prestamo</field>
 			<field name="view_mode">tree</field>
+			<field name="domain">[('state', 'in', ('acreditacion_pendiente', 'acreditado','pagado','refinanciado','precancelado','incobrable'))]</field>
 			<field name="view_ids" eval="[(5, 0, 0), 
 			(0, 0, {'view_mode': 'tree', 'view_id': ref('financiera_prestamo_datos_seguro_tree')})]"/>
 		</record>

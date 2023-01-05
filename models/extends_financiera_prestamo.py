@@ -59,7 +59,7 @@ class ExtendsFinancieraPrestamo(models.Model):
 	# agregamos campos para vista del seguro
 	partner_sexo = fields.Selection('Genero', related='partner_id.sexo', readonly=True)
 	partner_nacimiento = fields.Date('Fecha de nacimiento', related='partner_id.app_nacimiento')
-	partner_fecha_ingreso_laboral_o_beneficio_anses = fields.Char('Fecha de ingreso laboral', related='partner_id.fecha_ingreso_laboral_o_beneficio_anses')
+	partner_fecha_ingreso_laboral_o_beneficio_anses = fields.Char('Fecha ingreso laboral / beneficio ANSES', related='partner_id.fecha_ingreso_laboral_o_beneficio_anses')
 
 	# Docuementada en la API - Para conocer los ids de los planes
 	def obtener_planes_prestamo(self):
