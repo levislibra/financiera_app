@@ -33,6 +33,9 @@
 					<button name="button_send_mail_password_generate" string="Generar y enviar password por email"
 						confirm="Seguro que desea realizar esta accion?" type="object" />
 				</xpath>
+				<xpath expr="//field[@name='website']" position='before'>
+					<field name="app_nacimiento" />
+				</xpath>
 				<xpath expr="//div[1]" position='before'>
 					<group col="11" style="margin:0px;padding:0px;">
 						<div>
@@ -243,7 +246,6 @@
 								<field name="app_nombre" />
 								<field name="app_apellido" />
 								<field name="app_documento" />
-								<field name="app_nacimiento" />
 								<field name="app_edad" />
 							</group>
 							<group string="DNI y selfie">
@@ -330,18 +332,6 @@
 			</field>
 		</record>
 
-		<!-- <record id="partner_form_inherited_session_cobranza"  model="ir.ui.view">
-				<field name="name">Extension Partner form</field>
-				<field name="model">res.partner</field>
-				<field name="inherit_id" ref="financiera_cobranza_mora.cobranza_mora_cliente_sesion_form"/>
-				<field name="arch" type="xml">
-					<xpath expr="//group[@name='generales_columna_2']" position='inside'>
-						<field name="alerta_fecha_ultimo_pago" readonly="1"/>
-						<field name="alerta_dias_ultimo_pago" readonly="1"/>
-					</xpath>
-				</field>
-			</record> -->
-
 		<record id="cobranza_mora_cliente_tree" model="ir.ui.view">
 			<field name="name">Extension Partner form</field>
 			<field name="model">res.partner</field>
@@ -369,7 +359,7 @@
 										'border-radius':'20px',							
 									});
 								});
-							</script>
+						</script>
 						<group col="1">
 							<field name="app_numero_celular" required="1" />
 							<field name="app_codigo_introducido_usuario" required="0" />

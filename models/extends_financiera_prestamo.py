@@ -56,6 +56,10 @@ class ExtendsFinancieraPrestamo(models.Model):
 	app_requerimientos_completos_porcentaje = fields.Float("Cumplimiento de requerimientos", store=True, compute='change_app_requerimientos_porcentaje')
 	app_requerimientos_cumplidos = fields.Char("Requerimientos cumplidos", store=True, compute='change_app_requerimientos_porcentaje')
 	app_requerimientos_pendientes = fields.Char("Requerimientos pendientes", store=True, compute='change_app_requerimientos_porcentaje')
+	# agregamos campos para vista del seguro
+	partner_sexo = fields.Selection('Genero', related='partner_id.sexo', readonly=True)
+	partner_nacimiento = fields.Date('Fecha de nacimiento', related='partner_id.app_nacimiento')
+	partner_fecha_ingreso_laboral_o_beneficio_anses = fields.Char('Fecha de ingreso laboral', related='partner_id.fecha_ingreso_laboral_o_beneficio_anses')
 
 	# Docuementada en la API - Para conocer los ids de los planes
 	def obtener_planes_prestamo(self):

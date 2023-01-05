@@ -141,6 +141,36 @@
 		<menuitem name="Edicion CBU y Banco" id="menu_prestamos_cbu_banco_action" parent="financiera_prestamos.menu_prestamos" 
 			action="financiera_prestamo_cbu_banco_action" sequence="20"/>
 
+		<record model="ir.ui.view" id="financiera_prestamo_datos_seguro_tree">
+			<field name="name">Prestamo</field>
+			<field name="model">financiera.prestamo</field>
+			<field name="arch" type="xml">
+				<tree decoration-muted="state == 'cancelado'" decoration-danger="state in ('solicitado', 'revision', 'autorizado')" decoration-success="state == 'pagado'" decoration-warning="state == 'acreditacion_pendiente'" 
+					limit="15" editable="1">
+					<field name="partner_id" readonly="1"/>
+					<field name="monto_solicitado" sum="Total" readonly="1"/>
+					<field name="partner_main_id_number" readonly="1"/>
+					<field name="partner_sexo"/>
+					<field name="partner_nacimiento"/>
+					<field name="partner_fecha_inicio_trabajo_actual"/>
+					<field name="partner_beneficio_anses"/>
+					<field name="partner_fecha_ingreso_laboral_o_beneficio_anses"/>
+					<field name="state" readonly="1"/>
+					<field name="company_id" groups="base.group_erp_manager" readonly="1"/>
+				</tree>
+			</field>
+		</record>
+	
+		<record model="ir.actions.act_window" id="financiera_prestamo_datos_seguro_action">
+			<field name="name">Datos para el seguro</field>
+			<field name="res_model">financiera.prestamo</field>
+			<field name="view_mode">tree</field>
+			<field name="view_ids" eval="[(5, 0, 0), 
+			(0, 0, {'view_mode': 'tree', 'view_id': ref('financiera_prestamo_datos_seguro_tree')})]"/>
+		</record>
+
+		<menuitem name="Datos para el seguro" id="menu_prestamos_datos_seguro_action" parent="financiera_prestamos.menu_prestamos" 
+			action="financiera_prestamo_datos_seguro_action" sequence="6"/>
 
 	</data>
 </openerp>
