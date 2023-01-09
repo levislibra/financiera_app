@@ -148,13 +148,14 @@
 				<tree decoration-muted="state == 'cancelado'" decoration-danger="state in ('solicitado', 'revision', 'autorizado')" decoration-success="state == 'pagado'" decoration-warning="state == 'acreditacion_pendiente'" 
 					limit="15" editable="1">
 					<field name="partner_id" readonly="1"/>
-					<field name="monto_solicitado" sum="Total" readonly="1"/>
 					<field name="partner_main_id_number" readonly="1"/>
 					<field name="partner_sexo"/>
 					<field name="partner_nacimiento"/>
 					<field name="partner_fecha_inicio_trabajo_actual"/>
 					<field name="partner_beneficio_anses"/>
 					<field name="partner_fecha_ingreso_laboral_o_beneficio_anses"/>
+					<field name="monto_solicitado" sum="Total" readonly="1"/>
+					<field name="saldo" sum="Total" readonly="1"/>
 					<field name="state" readonly="1"/>
 					<field name="company_id" groups="base.group_erp_manager" readonly="1"/>
 				</tree>
