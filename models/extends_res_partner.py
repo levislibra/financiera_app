@@ -30,14 +30,17 @@ class ExtendsResPartner(models.Model):
 	app_cp = fields.Char('CP')
 	app_telefono = fields.Char('Telefono fijo')
 	app_localidad = fields.Char('Ciudad')
-	app_portal_provincia = fields.Many2one('res.country.state', "Provincia")
-	app_provincia = fields.Char('Provincia')
-	# Datos Ingreso y Egreso
+	app_provincia_id = fields.Many2one('res.country.state', "Provincia")
+	# Datos Egreso e Ingreso
 	app_deuda = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Le debes a otra entidad financiera?")
-	app_cuotas = fields.Char("Deuda que paga mensual")
+	app_deuda_monto_mensual = fields.Char("Deuda que paga mensual")
+	app_deuda_estado = fields.Selection([
+		('al_dia', 'Al dia'),
+		('con_atraso', 'Con atraso')
+	], "Estado de la deuda")
 	app_ingreso_fijo = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Tienes un ingreso fijo?")
-	app_ingreso = fields.Char("Ingreso")
 	app_dia_cobro = fields.Integer("Dia de cobro")
+	app_ingreso = fields.Char("Ingreso")
 	app_ingreso_pareja = fields.Char("Ingreso de la pareja")
 	app_asignaciones = fields.Char("Ingrso por asignaciones")
 	app_otros_ingresos = fields.Char("Otros ingresos")
@@ -53,28 +56,33 @@ class ExtendsResPartner(models.Model):
 	app_alquiler = fields.Char("Monto alquiler")
 	app_hipoteca = fields.Char("Credito hipotecario")
 	app_vivienda_tiempo = fields.Char("Anos que vive ahi")
-	app_vivienda_conviven = fields.Char("Personas que conviven")
 	app_vivienda_hijos = fields.Char("Hijos que conviven")
-	app_transporte = fields.Char("Transporte")
-	app_portal_transporte = fields.Selection([
+	app_transporte = fields.Selection([
 		('publico', 'Publico'),
 		('auto', 'Auto'),
 		('moto', 'Moto')
-	], "Medio de transporte")
-	app_prendario = fields.Char("Credito prendario")
+	], "Medio de transporte frecuente")
+	app_prendario = fields.Selection([
+		('si', 'Si tengo'),
+		('no', 'No tengo')
+	], "Tienes credito prendario?")
+	app_vehiculo = fields.Selection([
+		('si', 'Si tengo'),
+		('no', 'No tengo')
+	], 'Tiene un vehículo a su nombre?')
+	app_vehiculo_modelo = fields.Integer('Modelo del vehículo')
 	# Nivel de estudios
 	app_nivel_estudio = fields.Selection([('sin_estudios', 'Sin estudios'), ('primario', 'Primario'), ('secundario', 'Secundario'), ('terciario', 'Terciario'), ('universitario', 'Universitario')], "Nivel de estudio")
 	# Preguntas De comportamiento
-	app_dia_de_pago = fields.Selection([('primer_dia_mes', 'Primer día del mes'), ('apenas_cobro', 'Apenas cobro'), ('dia_vencimiento', 'El mismo dia que vence')], "¿Si tienen que realizar un pago el día 20 de cada mes, cuando lo haces?")
+	app_dia_de_pago = fields.Selection([('primer_dia_mes', 'Primer día del mes'), ('apenas_cobro', 'Apenas cobro'), ('dia_vencimiento', 'El mismo dia que vence')], "¿Tiene que realizar un pago el 20 de cada mes, cuando lo haces?")
 	app_utiliza_mercado_pago = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Utilizas Mercado Pago?")
 	app_utiliza_uala = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Utilizas Uala?")
-	app_mejor_dia_semana = fields.Selection([('lunes', 'Lunes'), ('martes', 'Martes'), ('miercoles', 'Miercoles'), ('jueves', 'Jueves'), ('viernes', 'Viernes'), ('sabado', 'Sabado'), ('domingo', 'Domingo')], "¿Cual es el mejor día de la semana?")
-	app_mejor_hora_dia = fields.Selection([('mañana', 'Mañana'), ('tarde', 'Tarde'), ('noche', 'Noche')], "¿Cual es la mejor hora del día?")
-	app_mejor_dia_mes = fields.Integer("¿Cual es el mejor día del mes?")
-	app_color_favorito = fields.Selection([('rojo', 'Rojo'), ('azul', 'Azul'), ('verde', 'Verde'), ('amarillo', 'Amarillo'), ('naranja', 'Naranja'), ('rosa', 'Rosa')], "¿Cual es tu color favorito?")
-	app_cantidad_perros = fields.Integer("¿Cuantos perros tenes?")
-	app_cantidad_gatos = fields.Integer("¿Cuantos gatos tenes?")
-	
+	app_utiliza_cabal = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Utilizas Cabal?")
+	app_utiliza_cencosud = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Utilizas Cencosud?")
+	app_historial_prestamos = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Tuviste prestamos en el pasado?")
+	app_historial_prestamos_incumplimientos = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Tuviste incumplimientos sobre prestamos en el pasado?")
+	app_historial_alquileres_incumplimientos = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Tuviste incumplimientos sobre alquileres en el pasado?")
+	app_historial_tarjetas_incumplimientos = fields.Selection([('si', 'Si'), ('no', 'No')], "¿Tuviste incumplimientos sobre tarjetas de credito en el pasado?")
 	# DNI frente
 	app_dni_frontal = fields.Binary("DNI frontal")
 	app_dni_frontal_completo = fields.Boolean("DNI frontal completo", compute='_compute_app_dni_frontal_completo')

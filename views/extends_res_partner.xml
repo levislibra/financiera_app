@@ -33,9 +33,6 @@
 					<button name="button_send_mail_password_generate" string="Generar y enviar password por email"
 						confirm="Seguro que desea realizar esta accion?" type="object" />
 				</xpath>
-				<xpath expr="//field[@name='website']" position='before'>
-					<field name="app_nacimiento" />
-				</xpath>
 				<xpath expr="//div[1]" position='before'>
 					<group col="11" style="margin:0px;padding:0px;">
 						<div>
@@ -236,9 +233,9 @@
 					</page>
 				</xpath>
 				<xpath expr="//group[@name='riskgroup']" position='before'>
-					<group string="Datos declarativos del cliente" col="4" style="background-color: lavender;">
+					<group string="Datos declarativos del cliente" col="2" style="background-color: lavender;">
 						<group col="1">
-							<group string="Alta de cliente" colspan="2">
+							<group string="Alta de cliente">
 								<field name="app_estado_portal" string="Estado del alta" />
 								<field name="app_ip_registro" />
 							</group>
@@ -246,7 +243,15 @@
 								<field name="app_nombre" />
 								<field name="app_apellido" />
 								<field name="app_documento" />
+								<field name="app_nacimiento" />
 								<field name="app_edad" />
+							</group>
+							<group string="Datos de domicilio">
+								<field name="app_direccion"/>
+								<field name="app_numero"/>
+								<field name="app_cp"/>
+								<field name="app_localidad"/>
+								<field name="app_provincia_id"/>
 							</group>
 							<group string="DNI y selfie">
 								<field name="app_dni_frontal" readonly="0" />
@@ -263,21 +268,8 @@
 								<label string=" " />
 								<button name="button_asignar_selfie_como_perfil" string="Asignar como imagen de perfil" type="object" />
 							</group>
-						</group>
-						<group col="1">
 							<group string="Nivel de estudios">
 								<field name="app_nivel_estudio"/>
-							</group>
-							<group string="Datos de Comportamiento">
-								<field name="app_dia_de_pago"/>
-								<field name="app_utiliza_mercado_pago"/>
-								<field name="app_utiliza_uala"/>
-								<field name="app_mejor_dia_semana"/>
-								<field name="app_mejor_hora_dia"/>
-								<field name="app_mejor_dia_mes"/>
-								<field name="app_color_favorito"/>
-								<field name="app_cantidad_perros"/>
-								<field name="app_cantidad_gatos"/>
 							</group>
 							<group string="CBU">
 								<field name="app_banco_haberes_numero_entidad" />
@@ -285,30 +277,34 @@
 								<field name="app_cbu" />
 								<field name="app_alias" />
 							</group>
-							<!-- <group string="Datos de domicilio">
-								<field name="app_direccion"/>
-								<field name="app_numero"/>
-								<field name="app_cp"/>
-								<field name="app_telefono"/>
-								<field name="app_localidad"/>
-								<field name="app_provincia"/>
-							</group> -->
 							<group string="Celular">
 								<field name="app_numero_celular" />
 							</group>
 						</group>
 						<group col="1">
+							<group string="Datos de Comportamiento">
+								<field name="app_dia_de_pago"/>
+								<field name="app_utiliza_mercado_pago"/>
+								<field name="app_utiliza_uala"/>
+								<field name="app_utiliza_cabal"/>
+								<field name="app_utiliza_cencosud"/>
+								<field name="app_historial_prestamos"/>
+								<field name="app_historial_prestamos_incumplimientos"/>
+								<field name="app_historial_alquileres_incumplimientos"/>
+								<field name="app_historial_tarjetas_incumplimientos"/>
+							</group>
 							<group string="Datos de ingresos y egreso">
 								<field name="app_deuda"/>
-								<field name="app_cuotas"/>
+								<field name="app_deuda_monto_mensual"/>
+								<field name="app_deuda_estado"/>
 								
-								<field name="app_ingreso_fijo"/>
 								<field name="app_ingreso"/>
+								<field name="app_ingreso_fijo"/>
 								<field name="app_dia_cobro"/>
-								<field name="app_cuotas"/>
 								<field name="app_ingreso_pareja"/>
 								<field name="app_otros_ingresos"/>
 								<field name="app_asignaciones"/>
+								<field name="app_monto_de_cuota"/>
 								<field name="app_ocupacion"/>
 								<field name="app_ocupacion_anos"/>
 								<field name="app_puesto"/>
@@ -318,15 +314,13 @@
 								<field name="app_alquiler"/>
 								<field name="app_hipoteca"/>
 								<field name="app_vivienda_tiempo"/>
-								<field name="app_vivienda_conviven"/>
 								<field name="app_vivienda_hijos"/>
-								<field name="app_portal_transporte"/>
+								<field name="app_transporte"/>
 								<field name="app_prendario"/>
+								<field name="app_vehiculo"/>
+								<field name="app_vehiculo_modelo"/>
 							</group>
 						</group>
-						<!-- <group col="1">
-							
-						</group> -->
 					</group>
 				</xpath>
 			</field>
