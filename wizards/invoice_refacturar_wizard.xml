@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="invoice_refacturar_wizard" model="ir.ui.view">
+        <field name="name">Refacturar</field>
+        <field name="model">invoice.refacturar.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="date_invoice"/>
+                </group>
+                <footer>
+                    <button name="refacturar" string="Refacturar" class="oe_right oe_highlight" type="object"/>
+                    <button string="Cancel" class="oe_right" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+	<act_window
+		id="invoice_refacturar_action"
+		name="Refacturar"
+		res_model="invoice.refacturar.wizard"
+		src_model="account.invoice"
+		view_mode="form"
+		multi="True"
+		target="new"
+		view_id="invoice_refacturar_wizard"
+	/>
+
+
+</odoo>
