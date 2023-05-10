@@ -18,6 +18,9 @@ class InvoiceRefacturarlWizards(models.TransientModel):
 		context = dict(self._context or {})
 		active_ids = context.get('active_ids')
 		print("active_ids: ", active_ids)
+		# order active_ids asc
+		active_ids.sort()
+		print("reveerse active_ids: ", active_ids)
 		for _id in active_ids:
 			invoice_id = self.env['account.invoice'].browse(_id)
 			move_id = invoice_id.move_id
