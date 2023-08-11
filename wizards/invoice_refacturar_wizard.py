@@ -18,11 +18,14 @@ class InvoiceRefacturarlWizards(models.TransientModel):
 		context = dict(self._context or {})
 		active_ids = context.get('active_ids')
 		print("active_ids: ", active_ids)
-		# order active_ids asc
-		active_ids.sort(reverse=True)
-		print("reveerse active_ids: ", active_ids)
-		for _id in active_ids:
-			invoice_id = self.env['account.invoice'].browse(_id)
+		# search invoices ids and order by document_number
+		invoice_ids = self.env['account.invoice'].search([('id', 'in', active_ids)])
+		tuple_invoice_ids = [(invoice_id, invoice_id.invoice_number) for invoice_id in invoice_ids]
+		tuple_invoice_ids.sort(key=lambda x: x[1])
+		print("tuple_invoice_ids: ", tuple_invoice_ids)
+		for tuble_invoice_id in tuple_invoice_ids:
+			invoice_id = tuble_invoice_id[0]
+			print("invoice_id.invoice_number: ", invoice_id.invoice_number)
 			move_id = invoice_id.move_id
 			move_id.button_cancel()
 			invoice_id.move_id = None
