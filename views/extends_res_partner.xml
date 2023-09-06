@@ -146,7 +146,8 @@
 							</h4>
 						</group>
 					</group>
-					<field name="alerta_ver_y_compartir" invisible="1" />
+					
+					<!-- <field name="alerta_ver_y_compartir" invisible="1" />
 					<label string="Datos en otras financieras" style="margin:0px;padding:0px;" />
 					<group style="background-color:lightsteelblue;padding:6px;margin-top:0px;"
 						attrs="{'invisible': [('alerta_ver_y_compartir', '=', True)]}">
@@ -184,7 +185,7 @@
 								<field name='alerta_ip_no_confiable_financieras' readonly="1" />
 							</h4>
 						</group>
-					</group>
+					</group> -->
 				</xpath>
 				<xpath expr="//page[5]" position='before'>
 					<page name="alertas_detalle" string="Alertas">
