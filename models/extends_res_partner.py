@@ -8,8 +8,6 @@ import logging
 import json
 import base64
 
-_logger = logging.getLogger(__name__)
-
 class ExtendsResPartner(models.Model):
 	_name = 'res.partner'
 	_inherit = 'res.partner'
@@ -119,7 +117,7 @@ class ExtendsResPartner(models.Model):
 	app_servicio_download_name = fields.Char("", default="servicio.jpeg")
 	app_observaciones = fields.Char("Observaciones")
 	# alertas
-	alerta_ultima_actualizacion = fields.Datetime("Alertas actualizadas al")
+	alerta_ultima_actualizacion = fields.Date("Alertas actualizadas al")
 	alerta_ip_multiple_registros = fields.Integer('Registros desde la misma IP')
 	alerta_ip_multiple_registros_ids = fields.Many2many('res.partner', 'alerta_ip_multiple_registros_rel', 'partner_id', 'partner2_id', string='Registros desde la misma IP')
 
@@ -626,22 +624,6 @@ class ExtendsResPartner(models.Model):
 				if partner_id.company_id.id not in company_alerta_ip_no_confiable:
 					company_alerta_ip_no_confiable.append(partner_id.company_id.id)
 			self.alerta_ip_no_confiable_financieras = len(company_alerta_ip_no_confiable)
-
-	@api.model
-	def _actualizar_alerta_partners(self):
-		cr = self.env.cr
-		uid = self.env.uid
-		partner_obj = self.pool.get('res.partner')
-		partner_ids = partner_obj.search(cr, uid, [
-			('prestamo_ids.state', 'in', ['acreditado','acreditacion_pendiente','precancelado','refinanciado','pagado','incobrable'])
-		])
-		_logger.info('Init Actualizar alerta partners sobre prestamos y cuotas: %s', str(len(partner_ids)))
-		count = 0
-		for _id in partner_ids:
-			partner_id = partner_obj.browse(cr, uid, _id)
-			partner_id.alerta_actualizar()
-			count += 1
-		_logger.info('Finish Actualizar alerta partners: %s partners actualizadas', count)
 
 	@api.one
 	def _app_ver_y_compartir_riesgo_cliente(self):

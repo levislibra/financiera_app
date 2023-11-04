@@ -1,20 +1,20 @@
 <openerp>
 	<data>
-
-    <!-- financiera Clientes -->
-    
-    <record model="ir.ui.view" id="financiera_onboarding_tree">
-      <field name="name">Onboarding</field>
-      <field name="model">res.partner</field>
-      <field name="arch" type="xml">
-        <tree decoration-info="state == 'draft'" string="Clientes" default_order='create_date desc'>
+		
+		<!-- financiera Clientes -->
+		
+		<record model="ir.ui.view" id="financiera_onboarding_tree">
+			<field name="name">Onboarding</field>
+			<field name="model">res.partner</field>
+			<field name="arch" type="xml">
+				<tree decoration-info="state == 'draft'" string="Clientes" default_order='create_date desc'>
 					<field name="create_date"/>
 					<field name="app_ip_registro" string="IP"/>
 					<field name="name"/>
 					<field name="main_id_number"/>
-          <field name="mobile"/>
+					<field name="mobile"/>
 					<field name="app_numero_celular_validado"/>
-          <field name="email"/>
+					<field name="email"/>
 					<field name="email_validado"/>
 					<field name="partner_tipo_id"/>
 					<field name="capacidad_pago_mensual"/>
@@ -22,19 +22,20 @@
 					<field name="state"/>
 					<field name="app_estado_bloqueado"/>
 					<field name="active"/>
+					<field name="alerta_ultima_actualizacion"/>
 					<field name="create_uid"/>
 					<field name="company_id" groups="base.group_erp_manager"/>
-        </tree>
-      </field>
-    </record>
-
+				</tree>
+			</field>
+		</record>
+		
 		<!-- Filter Onboarding -->
-
+		
 		<record model="ir.ui.view" id="financiera_onboarding_filter">
-      <field name="name">res.partner.filter</field>
-      <field name="model">res.partner</field>
-      <field name="arch" type="xml">
-        <search>
+			<field name="name">res.partner.filter</field>
+			<field name="model">res.partner</field>
+			<field name="arch" type="xml">
+				<search>
 					<filter string="Hoy" name="hoy" domain="[('create_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('create_date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
 					<filter string="Ayer" name="ayer" domain="[('create_date','&gt;=', datetime.datetime.combine(context_today() - datetime.timedelta(days=1), datetime.time(0,0,0))), ('create_date','&lt;=', datetime.datetime.combine(context_today()- datetime.timedelta(days=1), datetime.time(23,59,59)))]"/>
 					<filter string="Ultimos 7 dias" name="last_7_days"  domain="[('create_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d') )]"/>
@@ -42,30 +43,30 @@
 					<filter string="Ultimos 30 dias" name="last_30_days"  domain="[('create_date','&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d') )]"/>
 					<filter string="Ultimos 60 dias" name="last_60_days"  domain="[('create_date','&gt;', (context_today() - datetime.timedelta(days=60)).strftime('%%Y-%%m-%%d') )]"/>
 					<separator/>
-          <field name="name"/>
-          <field name="main_id_number" string="Identificacion principal"/>
+					<field name="name"/>
+					<field name="main_id_number" string="Identificacion principal"/>
 					<separator/>
 					<filter name="group_company_id" string="Empresa" context="{'group_by':'company_id'}" groups="base.group_erp_manager"/>
 					<filter name="group_partner_tipo_id" string="Tipo de cliente" context="{'group_by':'partner_tipo_id'}"/>
-        </search>
-      </field>
-    </record>
-
+				</search>
+			</field>
+		</record>
+		
 		<record model="ir.actions.act_window" id="app_onboarding_action">
-      <field name="name">Onboarding</field>
-      <field name="res_model">res.partner</field>
+			<field name="name">Onboarding</field>
+			<field name="res_model">res.partner</field>
 			<field name="domain">['|', ('active', '=', True),('active', '=', False),('create_date','!=',None),('customer','=',True)]</field>
-      <field name="view_mode">tree,form</field>
-      <field name="view_id" ref="financiera_onboarding_tree"/>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="financiera_onboarding_tree"/>
 			<field name="search_view_id" ref="financiera_onboarding_filter"/>
-    </record>
-
+		</record>
+		
 		<menuitem name="Onboarding" id="menu_app_onboarding" sequence="1"
-    web_icon="financiera_app,static/description/onboarding.png"
-    groups="financiera_app.user"/>
-
+		web_icon="financiera_app,static/description/onboarding.png"
+		groups="financiera_app.user"/>
+		
 		<menuitem name="Onboarding" id="menu_app_onboarding_action" sequence="0"
-			parent="menu_app_onboarding" action="app_onboarding_action"/>
-
+		parent="menu_app_onboarding" action="app_onboarding_action"/>
+		
 	</data>
 </openerp>

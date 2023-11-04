@@ -1,20 +1,34 @@
 <openerp>
-    <data>
-  
-      <!-- Vista Form Entidad -->
-  
-      <record id="app_company_form_inherited"  model="ir.ui.view">
-        <field name="name">App Movil Extension Company form</field>
-        <field name="model">res.company</field>
-        <field name="inherit_id" ref="financiera_prestamos.company_form_inherited"/>
-        <field name="arch" type="xml">
-          <xpath expr="//field[@name='id_prestamo_venta']" position='after'>
-            <separator string="Modulo App Movil" colspan="2"/>
-            <field name="app_id"/>
-            <field name="app_is_contracted"/>
-          </xpath>
-        </field>
-      </record>
-  
-    </data>
-  </openerp>
+	<data>
+		
+		<!-- Vista Form Entidad -->
+		
+		<record id="app_company_form_inherited"  model="ir.ui.view">
+			<field name="name">App Movil Extension Company form</field>
+			<field name="model">res.company</field>
+			<field name="inherit_id" ref="financiera_prestamos.company_form_inherited"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='id_prestamo_venta']" position='after'>
+					<separator string="Modulo App Movil" colspan="2"/>
+					<field name="app_id"/>
+					<field name="app_is_contracted"/>
+				</xpath>
+			</field>
+		</record>
+
+		<!-- extends base.view_company_tree -->
+		
+		<record id="app_company_tree_inherited" model="ir.ui.view">
+			<field name="name">App Movil Extension Company tree</field>
+			<field name="model">res.company</field>
+			<field name="inherit_id" ref="base.view_company_tree"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='name']" position='after'>
+					<field name="app_is_contracted"/>
+					<field name="fecha_actualizacion_alertas"/>
+				</xpath>
+			</field>
+		</record>
+		
+	</data>
+</openerp>
