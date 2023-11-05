@@ -102,6 +102,7 @@ class ExtendsFinancieraPrestamo(models.Model):
 						})
 		return ret
 
+
 	@api.model
 	def _cron_prestamos_cbu_to_banco(self):
 		prestamo_obj = self.pool.get('financiera.prestamo')

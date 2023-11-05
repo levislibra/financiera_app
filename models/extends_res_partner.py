@@ -118,18 +118,7 @@ class ExtendsResPartner(models.Model):
 	app_observaciones = fields.Char("Observaciones")
 	# alertas
 	alerta_ultima_actualizacion = fields.Date("Alertas actualizadas al")
-	alerta_ip_multiple_registros = fields.Integer('Registros desde la misma IP')
-	alerta_ip_multiple_registros_ids = fields.Many2many('res.partner', 'alerta_ip_multiple_registros_rel', 'partner_id', 'partner2_id', string='Registros desde la misma IP')
-
-	alerta_celular_multiple_partner = fields.Integer('Clientes con el mismo celular')
-	alerta_celular_multiple_partner_ids = fields.Many2many('res.partner', 'alerta_celular_multiple_partner_rel', 'partner_id', 'partner2_id', string='Clientes con el mismo celular')
-
-	alerta_celular_como_contacto = fields.Integer('Contactos con el mismo celular')
-	alerta_celular_como_contacto_ids = fields.Many2many('res.partner.contacto', 'alerta_celular_como_contacto_rel', 'partner_id', 'partner2_id', string='Contactos con el mismo celular')
-
-	alerta_domicilio_similar = fields.Integer('Clientes con domicilio similar')
-	alerta_domicilio_similar_ids = fields.Many2many('res.partner', 'alerta_domicilio_similar_rel', 'partner_id', 'partner2_id', string='Clientes con domicilio similar')
-
+	
 	alerta_prestamos_activos = fields.Integer('Prestamos activos')
 	alerta_prestamos_cobrados = fields.Integer('Prestamos cobrados')
 	
@@ -143,13 +132,6 @@ class ExtendsResPartner(models.Model):
 	alerta_cuotas_incobrable = fields.Integer('Cuotas incobrable')
 	alerta_fecha_ultimo_pago = fields.Char('Fecha ultimo pago')
 	alerta_dias_ultimo_pago = fields.Integer('Dias del ultimo pago')
-	# Datos compartidos entre financieras
-	alerta_ver_y_compartir = fields.Boolean('Ver y compartir', compute='_app_ver_y_compartir_riesgo_cliente')
-	alerta_registrado_financieras = fields.Integer('Registros')
-	alerta_prestamos_activos_financieras = fields.Integer('Prestamos activos (otras fin.)')
-	alerta_cuotas_vencidas_financieras = fields.Integer('Cuotas en mora (otras fin.)')
-	alerta_compromiso_mensual_financieras = fields.Float('Compromiso mensual (otras fin.)')
-	alerta_ip_no_confiable_financieras = fields.Integer('IP no confiable (otras fin.)')
 
 	@api.one
 	def button_confirmar_datos_numero_celular(self):
@@ -164,10 +146,6 @@ class ExtendsResPartner(models.Model):
 	@api.one
 	def button_modificar_celular(self):
 		self.app_numero_celular_validado = False
-
-	# @api.onchange('mobile')
-	# def _onchange_validar_celular_cambiar_movil(self):
-	# 	self.app_numero_celular_validado = False
 
 	@api.multi
 	def button_solicitar_codigo_portal(self):
@@ -314,12 +292,6 @@ class ExtendsResPartner(models.Model):
 	@api.one
 	def alerta_actualizar(self):
 		self.alerta_ultima_actualizacion = datetime.now()
-		# Datos de registro
-		self.compute_alerta_ip_multiple_registros()
-		self.compute_alerta_celular_multiple_partner()
-		self.compute_alerta_celular_como_contacto()
-		self.compute_alerta_domicilio_similar()
-		# Datos de prestamos y cuotas
 		self.compute_alerta_prestamos_activos()
 		self.compute_alerta_prestamos_cobrados()
 		self.compute_alerta_cuotas_activas()
@@ -331,90 +303,6 @@ class ExtendsResPartner(models.Model):
 		self.compute_alerta_cuotas_mora_tardia()
 		self.compute_alerta_cuotas_mora_incobrable()
 		self.compute_alerta_fecha_ultimo_pago()
-		# Datos compartidos
-		self.compute_alerta_registrado_financieras()
-		self.compute_alerta_prestamos_activos_financieras()
-		self.compute_alerta_cuota_vencidas_financieras()
-		self.compute_alerta_compromiso_mensual_financieras()
-		self.compute_alerta_ip_no_confiable_financieras()
-
-	@api.one
-	def compute_alerta_ip_multiple_registros(self):
-		if self.app_ip_registro:
-			partner_obj = self.pool.get('res.partner')
-			partner_ids = partner_obj.search(self.env.cr, self.env.uid, [
-				('app_ip_registro', '=', self.app_ip_registro),
-				('main_id_number', '!=', False),
-				('main_id_number', '!=', self.main_id_number),
-				('main_id_number', '!=', self.dni),
-				'|', ('active', '=', True), ('active', '=', False),
-				('company_id', '=', self.company_id.id)])
-			self.alerta_ip_multiple_registros = len(partner_ids)
-			self.alerta_ip_multiple_registros_ids = [(6, 0, partner_ids)]
-	
-	@api.one
-	def button_app_ip_registro_no_confiable(self):
-		self.app_ip_registro_no_confiable = True
-		self.compute_alerta_ip_multiple_registros()
-		for partner_id in self.alerta_ip_multiple_registros_ids:
-			partner_id.app_ip_registro_no_confiable = True
-
-	@api.one
-	def button_app_ip_registro_confiable(self):
-		self.app_ip_registro_no_confiable = False
-		self.compute_alerta_ip_multiple_registros()
-		for partner_id in self.alerta_ip_multiple_registros_ids:
-			partner_id.app_ip_registro_no_confiable = False
-
-
-	@api.one
-	def button_app_estado_bloqueado(self):
-		self.app_estado_bloqueado = True
-		self.app_estado_portal = "Bloqueado por ip no confiable."
-
-	@api.one
-	def button_app_estado_no_bloqueado(self):
-		self.app_estado_bloqueado = False
-		self.app_estado_portal = ""
-
-	@api.one
-	def compute_alerta_celular_multiple_partner(self):
-		if self.mobile and self.dni:
-			partner_obj = self.pool.get('res.partner')
-			partner_ids = partner_obj.search(self.env.cr, self.env.uid, [
-				('mobile', '=', self.mobile),
-				('id', '!=', self.id),
-				('main_id_number', '!=', self.main_id_number),
-				('main_id_number', '!=', self.dni),
-				('company_id', '=', self.company_id.id)])
-			self.alerta_celular_multiple_partner = len(partner_ids)
-			self.alerta_celular_multiple_partner_ids = [(6, 0, partner_ids)]
-	
-	@api.one
-	def compute_alerta_celular_como_contacto(self):
-		if self.mobile and self.dni:
-			contacto_obj = self.pool.get('res.partner.contacto')
-			contacto_ids = contacto_obj.search(self.env.cr, self.env.uid, [
-				'|', ('telefono', '=', self.mobile), ('movil', '=', self.mobile),
-				('company_id', '=', self.company_id.id)])
-			self.alerta_celular_como_contacto = len(contacto_ids)
-			self.alerta_celular_como_contacto_ids = [(6, 0, contacto_ids)]
-
-	@api.one
-	def compute_alerta_domicilio_similar(self):
-		if self.street and self.state_id and self.zip:
-			street = self.street.split(" ")[0]
-			partner_obj = self.pool.get('res.partner')
-			partner_ids = partner_obj.search(self.env.cr, self.env.uid, [
-				('street', '=ilike', street+'%'),
-				('state_id', '=', self.state_id.id),
-				('zip', '=', self.zip),
-				('id', '!=', self.id),
-				('main_id_number', '!=', self.main_id_number),
-				('main_id_number', '!=', self.dni),
-				('company_id', '=', self.company_id.id)])
-			self.alerta_domicilio_similar = len(partner_ids)
-			self.alerta_domicilio_similar_ids = [(6, 0, partner_ids)]
 
 	@api.one
 	def compute_alerta_prestamos_activos(self):
@@ -539,95 +427,6 @@ class ExtendsResPartner(models.Model):
 				self.alerta_fecha_ultimo_pago = fecha_ultimo_pago.strftime('%d-%m-%Y')
 				diferencia = datetime.now() - fecha_ultimo_pago
 				self.alerta_dias_ultimo_pago = diferencia.days
-
-	# Alertas compartidas
-	@api.one
-	def button_alerta_ver_y_compartir(self):
-		self.alerta_ver_y_compartir = True
-
-	@api.one
-	def compute_alerta_registrado_financieras(self):
-		company_obj = self.sudo().pool.get('res.company')
-		company_ids = company_obj.search(self.sudo().env.cr, self.sudo().env.uid, [
-			('app_id.app_ver_y_compartir_riesgo_cliente', '=', True),
-			('id', '!=', self.company_id.id)])
-		if len(company_ids) > 0:
-			partner_obj = self.sudo().pool.get('res.partner')
-			partner_ids = partner_obj.search(self.sudo().env.cr, self.sudo().env.uid, [
-				'|', ('main_id_number', '=', self.main_id_number), ('main_id_number', '=', self.dni),
-				('company_id', 'in', company_ids)])
-			self.alerta_registrado_financieras = len(partner_ids)
-
-	@api.one
-	def compute_alerta_prestamos_activos_financieras(self):
-		company_obj = self.sudo().pool.get('res.company')
-		company_ids = company_obj.search(self.sudo().env.cr, self.sudo().env.uid, [
-			('app_id.app_ver_y_compartir_riesgo_cliente', '=', True),
-			('id', '!=', self.company_id.id)])
-		if len(company_ids) > 0 and self.main_id_number:
-			prestamo_obj = self.sudo().pool.get('financiera.prestamo')
-			prestamo_ids = prestamo_obj.search(self.sudo().env.cr, self.sudo().env.uid, [
-				'|', ('partner_id.main_id_number', '=', self.main_id_number), ('partner_id.main_id_number', '=', self.dni),
-				('state', '=', 'acreditado'),
-				('company_id', 'in', company_ids)])
-			self.alerta_prestamos_activos_financieras = len(prestamo_ids)
-
-	@api.one
-	def compute_alerta_cuota_vencidas_financieras(self):
-		company_obj = self.sudo().pool.get('res.company')
-		company_ids = company_obj.search(self.sudo().env.cr, self.sudo().env.uid, [
-			('app_id.app_ver_y_compartir_riesgo_cliente', '=', True),
-			('id', '!=', self.company_id.id)])
-		if len(company_ids) > 0 and self.main_id_number:
-			cuota_obj = self.sudo().pool.get('financiera.prestamo.cuota')
-			cuota_ids = cuota_obj.search(self.sudo().env.cr, self.sudo().env.uid, [
-				'|', ('partner_id.main_id_number', '=', self.main_id_number), ('partner_id.main_id_number', '=', self.dni),
-				('state', 'in', ['activa','judicial','incobrable']),
-				('state_mora', 'in', ['moraTemprana','moraMedia','moraTardia','incobrable']),
-				('company_id', 'in', company_ids)])
-			self.alerta_cuotas_vencidas_financieras = len(cuota_ids)
-
-	@api.one
-	def compute_alerta_compromiso_mensual_financieras(self):
-		company_obj = self.sudo().pool.get('res.company')
-		company_ids = company_obj.search(self.sudo().env.cr, self.sudo().env.uid, [
-			('app_id.app_ver_y_compartir_riesgo_cliente', '=', True),
-			('id', '!=', self.company_id.id)])
-		if len(company_ids) > 0 and self.main_id_number:
-			partner_obj = self.sudo().pool.get('res.partner')
-			partner_ids = partner_obj.search(self.sudo().env.cr, self.sudo().env.uid, [
-				'|', ('main_id_number', '=', self.main_id_number), ('main_id_number', '=', self.dni),
-				('cuota_ids.state', '=', 'activa'),
-				('company_id', 'in', company_ids)])
-			alerta_compromiso_mensual_financieras = 0
-			for _id in partner_ids:
-				partner_id = self.sudo().env['res.partner'].browse(_id)
-				if partner_id.saldo > 0 and partner_id.capacidad_pago_mensual > 0:
-					alerta_compromiso_mensual_financieras += partner_id.capacidad_pago_mensual-partner_id.capacidad_pago_mensual_disponible
-			self.alerta_compromiso_mensual_financieras = alerta_compromiso_mensual_financieras
-	
-	@api.one
-	def compute_alerta_ip_no_confiable_financieras(self):
-		company_obj = self.sudo().pool.get('res.company')
-		company_ids = company_obj.search(self.sudo().env.cr, self.sudo().env.uid, [
-			('app_id.app_ver_y_compartir_riesgo_cliente', '=', True),
-			('id', '!=', self.company_id.id)])
-		if len(company_ids) > 0:
-			partner_obj = self.sudo().pool.get('res.partner')
-			partner_ids = partner_obj.search(self.sudo().env.cr, self.sudo().env.uid, [
-				('app_ip_registro', '=', self.app_ip_registro),
-				('app_ip_registro_no_confiable', '=', True),
-				('company_id', 'in', company_ids)])
-			company_alerta_ip_no_confiable = []
-			for _id in partner_ids:
-				partner_id = self.sudo().env['res.partner'].browse(_id)
-				if partner_id.company_id.id not in company_alerta_ip_no_confiable:
-					company_alerta_ip_no_confiable.append(partner_id.company_id.id)
-			self.alerta_ip_no_confiable_financieras = len(company_alerta_ip_no_confiable)
-
-	@api.one
-	def _app_ver_y_compartir_riesgo_cliente(self):
-		self.alerta_ver_y_compartir = self.company_id.app_id.app_ver_y_compartir_riesgo_cliente
 
 class ExtendsResUser(models.Model):
 	_name = 'res.users'

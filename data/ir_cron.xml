@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <openerp>
-	<!-- <data noupdate="1"> -->
+	<data noupdate="1">
 
 		<record id="ir_cron_actualizar_alerta_partner" model="ir.cron">
 			<field name="name">Actualizar alertas en clientes</field>
@@ -27,5 +27,5 @@
 			<field name="function">_cron_uptade_punitorio</field>
 		</record>
 
-	<!-- </data> -->
+	</data>
 </openerp>

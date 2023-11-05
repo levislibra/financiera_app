@@ -30,14 +30,27 @@ class ExtendsResCompany(models.Model):
 		partner_obj = self.pool.get('res.partner')
 		total = 0
 		count = 0
+		today = datetime.now()
+		today_menos_10 = today - timedelta(days=+10)
 		while True:
 			partner_ids = partner_obj.search(self.env.cr, self.env.uid, [
 				('active', '=', True),
 				('company_id.id', '=', self.id),
-				('prestamo_ids', '!=', False),
-				'|', ('alerta_ultima_actualizacion', '=', False), ('alerta_ultima_actualizacion', '<', str(datetime.now())),
+				('cuota_ids.state', '=', 'activa'),
+				'|', ('alerta_ultima_actualizacion', '=', False), ('alerta_ultima_actualizacion', '<', str(today)),
 			], limit=200)
 			print("partner_ids: ", partner_ids)
+			# Buscamos partner que tengan cuotas con pagos en los ultimos 10 dias y sin cuotas activas
+			partner_pagos_recientes_ids = partner_obj.search(self.env.cr, self.env.uid, [
+				('active', '=', True),
+				('company_id.id', '=', self.id),
+				('cuota_ids.state', '!=', 'activa'),
+				('cuota_ids.payment_ids.create_date', '>', str(today_menos_10)),
+				'|', ('alerta_ultima_actualizacion', '=', False), ('alerta_ultima_actualizacion', '<', str(today)),
+			], limit=200)
+			print("partner_pagos_recientes_ids: ", partner_pagos_recientes_ids)
+			# unir listas
+			partner_ids = partner_ids + partner_pagos_recientes_ids
 			if not partner_ids:
 				break
 			try:
