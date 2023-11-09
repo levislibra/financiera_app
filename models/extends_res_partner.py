@@ -291,7 +291,6 @@ class ExtendsResPartner(models.Model):
 
 	@api.one
 	def alerta_actualizar(self):
-		self.alerta_ultima_actualizacion = datetime.now()
 		self.compute_alerta_prestamos_activos()
 		self.compute_alerta_prestamos_cobrados()
 		self.compute_alerta_cuotas_activas()

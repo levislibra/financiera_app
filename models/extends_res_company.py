@@ -61,8 +61,10 @@ class ExtendsResCompany(models.Model):
 					partner_id.alerta_actualizar()
 					count += 1
 					print("Actualizado / Total: ", count, total)
+				partner_ids.write({'alerta_ultima_actualizacion': today})
 				self.env.cr.commit()
 			except Exception as e:
 				_logger.error('Error Actualizar alerta partners sobre prestamos y cuotas: %s', str(e))
 				self.env.cr.rollback()
 		_logger.info('Finish Actualizar alerta partners: %s partners actualizadas', count)
+		self.fecha_actualizacion_alertas = today
