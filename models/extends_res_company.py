@@ -55,13 +55,15 @@ class ExtendsResCompany(models.Model):
 				break
 			try:
 				total += len(partner_ids)
+				partner_obj_ids = partner_obj.browse(self.env.cr, self.env.uid, partner_ids)
 				_logger.info('Init Actualizar alerta partners sobre prestamos y cuotas: %s', str(len(partner_ids)))
-				for _id in partner_ids:
-					partner_id = partner_obj.browse(self.env.cr, self.env.uid, _id)
+				for partner_id in partner_obj_ids:
+					print("partner_id: ", partner_id)
+					# partner_id = partner_obj.browse(self.env.cr, self.env.uid, _id)
 					partner_id.alerta_actualizar()
 					count += 1
 					print("Actualizado / Total: ", count, total)
-				partner_ids.write({'alerta_ultima_actualizacion': today})
+				partner_obj_ids.write({'alerta_ultima_actualizacion': today})
 				self.env.cr.commit()
 			except Exception as e:
 				_logger.error('Error Actualizar alerta partners sobre prestamos y cuotas: %s', str(e))
