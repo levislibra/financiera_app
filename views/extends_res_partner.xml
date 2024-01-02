@@ -42,7 +42,7 @@
 						</div>
 					</group>
 					<label string="Datos internos" style="margin:0px;padding:0px;" />
-					<group name='alertas' style="background-color:lightsteelblue;padding:1px;margin:0px;" col="6">
+					<group name='alertas' style="background-color:lightsteelblue;padding:1px;margin:0px;" col="7">
 						<group col="1">
 							<label string="Prestamos activos" />
 							<h4>
@@ -101,6 +101,16 @@
 							<label string="Dias del ultimo pago" />
 							<h4 style="color: red;">
 								<field name='alerta_dias_ultimo_pago' />
+							</h4>
+						</group>
+						<group col="1">
+							<label string="Dias en Mora" />
+							<h4 style="color: red;">
+								<field name='dias_en_mora' />
+							</h4>
+							<label string="Mora 5 / 30" />
+							<h4 style="color: red;">
+								<field name='mora_5_30' />
 							</h4>
 						</group>
 					</group>
