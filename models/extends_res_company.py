@@ -36,7 +36,7 @@ class ExtendsResCompany(models.Model):
 			partner_ids = partner_obj.search(self.env.cr, self.env.uid, [
 				('active', '=', True),
 				('company_id.id', '=', self.id),
-				('cuota_ids.state', '=', 'activa'),
+				'|', ('cuota_ids.state', '=', 'activa'), ('alerta_prestamos_activos', '>', 0),
 				'|', ('alerta_ultima_actualizacion', '=', False), ('alerta_ultima_actualizacion', '<', str(today)),
 			], limit=200)
 			print("partner_ids: ", partner_ids)
