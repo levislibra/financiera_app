@@ -319,7 +319,7 @@ class ExtendsResPartner(models.Model):
 			prestamo_obj = self.pool.get('financiera.prestamo')
 			prestamo_ids = prestamo_obj.search(self.env.cr, self.env.uid, [
 				('partner_id', '=', self.id),
-				('state', '=', 'pagado'),
+				('state', 'in', ('pagado', 'precancelado')),
 				('company_id', '=', self.company_id.id)])
 			self.alerta_prestamos_cobrados = len(prestamo_ids)
 
